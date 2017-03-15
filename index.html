@@ -6,13 +6,172 @@
 <body>
 <div id="Ring"></div>
 <script type="text/javascript" src="vendor/mithril.min.js"></script>
-<script type="text/javascript" src="src/models/Entry.js"></script>
+<!-- <script type="text/javascript" src="src/models/Entry.js"></script>
 <script type="text/javascript" src="src/components/EntryForm.js"></script>
 <script type="text/javascript" src="src/components/EntryList.js"></script>
 <script type="text/javascript" src="src/components/Volunteers.js"></script>
-<script type="text/javascript" src="src/components/ParentComponent.js"></script>
+<script type="text/javascript" src="src/components/ParentComponent.js"></script> -->
 
 <script type="text/javascript">
+
+//assuming these as private arrays
+var videos = ['video1','video2','video3'];
+var songs = ['song1','song2','song3'];
+var model = {};
+
+//assuming these as public apis
+model.allVideos = function () {
+    return videos;
+};
+model.allSongs = function () {
+    return songs;
+}
+model.addVideo = function (new_item) {
+    videos.push(new_item);
+};
+model.addSong = function (new_item) {
+    songs.push(new_item);
+};
+
+
+var template = {
+    addV : function (new_item) {
+        model.addVideo(new_item);
+    },
+    addS : function (new_item) {
+        model.addSong(new_item);
+    },
+    controller: function () {
+        return {
+            addV : template.addV,
+            addS : template.addS
+        }
+    },
+    view: function(ctrl) {
+        return m.component(thumbLists,{addV : ctrl.addV, addS : ctrl.addS});    
+    }
+};
+
+
+
+var thumbLists = {
+    controller : function (attr) {
+
+    },
+    view : function (ctrl,attr) {
+        return m("div",[
+                    m.component(thumb,{display : model.allVideos, add : attr.addV}),
+                    m.component(thumb,{display : model.allSongs, add : attr.addS})
+                ]);
+    }
+};
+
+var thumb = {
+    controller: function (attrs) { 
+    },
+    view : function (ctrl,attrs) {
+        return m("div", [
+            m("ul",[
+                attrs.display().map(function(item) {
+                return m("li", [
+                    m("div", item)                    
+                ])
+            })]),
+            m("Button",{onclick : function () { attrs.add("new item");}},"Add")            
+        ]);
+    }
+};
+
+
+m.mount(document.body,template);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*var users = [
+    {id: 1, name: "John", email: "john@example.com"},
+    {id: 2, name: "Mary", email: "mary@example.com"},
+    {id: 3, name: "Bob", email: "bob@example.com"}
+];
+//helper func 
+var viewModelMap = function(signature) {
+    var map = {}
+    return function(key) {
+        if (!map[key]) {
+            map[key] = {}
+            for (var prop in signature) map[key][prop] = m.prop(signature[prop]())
+        }
+        return map[key]
+    }
+}
+var app = {}
+app.controller = function() {
+    this.users = users;
+
+    this.usersVM = viewModelMap({
+        isEditing: m.prop(false),
+        tempValue: m.prop(""),
+        error: m.prop("")
+    });
+};
+app.view = function(ctrl) {
+    return m('div',[
+            m("a[href=/new]", { config: m.route }, "New app"),
+            m(newapp,{pctrl : ctrl})
+        ]);
+};
+
+var newapp ={};
+newapp.controller = function (pattrs) {
+    console.log(attrs);
+};
+newapp.view = function (ctrl,pattrs) {
+    console.log(pattrs);
+    console.log(ctrl);
+    return m('div',"hello");
+}
+m.route(document.body, '/', {
+    '/': app,
+    '/new': newapp
+})
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
  /* Entry.create({
     "enteredAt": 1443018758199,
     "volunteers": [

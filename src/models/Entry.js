@@ -1,32 +1,32 @@
-(function() {
+var Entry = (function() {
 
-  window.Entry = {};
-
-  var store = [];
-  var idCounter = 1;
-
-  Entry.all = function () {
-    return store;
-  };
-
-  Entry.create = function (attrs) {
-    attrs.id = (idCounter += 1);
-    attrs.enteredAt = Date.now();
-    store.push(attrs);
-    return attrs;
-  };
-
-  Entry.vm = function () {
+    var store = [],
+        idCounter = 1,
+        all = function () {
+            return store;
+        },
+        create = function (attrs) {
+            attrs.id = (idCounter += 1);
+            attrs.enteredAt = Date.now();
+            store.push(attrs);
+            return attrs;
+        },
+        vm = function () {
+            return {
+                enteredAt: null,
+                volunteers: [ volunteerVM() ]
+            };
+        },
+        volunteerVM = function () {
+            return {
+                name: '',
+                category: ''
+            };
+        };
     return {
-      enteredAt: null,
-      volunteers: [ Entry.volunteerVM() ]
-    };
-  };
-
-  Entry.volunteerVM = function () {
-    return {
-      name: '',
-      category: ''
-    };
-  };
+        all : all,
+        create : create,
+        vm : vm,
+        volunteerVM : volunteerVM
+    }
 })();
