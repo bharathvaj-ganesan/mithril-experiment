@@ -27,7 +27,7 @@ model.addSong = function (new_item) {
     songs.push(new_item);
 };
 
-
+// Parent Template
 var template = {
     addV : function (new_item) {
         model.addVideo(new_item);
@@ -47,7 +47,7 @@ var template = {
 };
 
 
-
+// List of thumb rows
 var thumbLists = {
     controller : function (attr) {
 
@@ -60,6 +60,7 @@ var thumbLists = {
     }
 };
 
+// List thumbs for earch row
 var thumb = {
     controller: function (attrs) { 
     },
